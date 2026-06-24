@@ -1,5 +1,7 @@
 function setup() {
+  validateRequiredSetupConfig();
   createSpreadsheetHeaders();
+  deleteObsoletePayrollSheets();
   createPlacementSheets();
   createPositionPlacementSheets();
   syncPlacementSheetsFromMain();
@@ -12,6 +14,61 @@ function setup() {
   DriveApp.getFolderById(KARTU_KELUARGA_FOLDER_ID);
   getQrFolder();
   console.log('Setup berhasil: header spreadsheet, sinkronisasi sheet penempatan dan posisi penempatan, format duplikat NIK, serta folder Drive, SIM, dan QR valid.');
+}
+
+function validateRequiredSetupConfig() {
+  const requiredConfig = {
+    ROOT_FOLDER_ID: ROOT_FOLDER_ID,
+    SPREADSHEET_ID: SPREADSHEET_ID,
+    KTP_FOLDER_ID: KTP_FOLDER_ID,
+    SIM_FOLDER_ID: SIM_FOLDER_ID,
+    SURAT_KUASA_FOLDER_ID: SURAT_KUASA_FOLDER_ID,
+    KARTU_KELUARGA_FOLDER_ID: KARTU_KELUARGA_FOLDER_ID
+  };
+
+  Object.keys(requiredConfig).forEach(function (key) {
+    if (!String(requiredConfig[key] || '').trim()) {
+      throw new Error(key + ' belum diatur di Script Properties.');
+    }
+  });
+}
+
+const OBSOLETE_PLACEMENTS = [
+  'DRIVER JNT TGR',
+  'DRIVER JNT PKU',
+  'DRIVER JNT BTN',
+  'DRIVER JNT JRT SUNTER',
+  'DRIVER CARGO SUKABUMI',
+  'DRIVER CARGO BANDUNG',
+  'DRIVER VIP',
+  'DRIVER FASTRANS',
+  'DRIVER CARGO CIANJUR',
+  'DRIVER APL JURUMUDI',
+  'DRIVER APL SEMARANG',
+  'DRIVER APL BANDUNG'
+];
+const OBSOLETE_POSITIONS = ['DRIVER SIM B1/B2 UMUM'];
+
+function deleteObsoletePayrollSheets() {
+  const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const sheetNames = [];
+
+  OBSOLETE_PLACEMENTS.forEach(function (placement) {
+    sheetNames.push(getPlacementSheetName(placement));
+  });
+
+  OBSOLETE_POSITIONS.forEach(function (position) {
+    OBSOLETE_PLACEMENTS.forEach(function (placement) {
+      sheetNames.push(getPositionPlacementSheetName(position, placement));
+    });
+  });
+
+  sheetNames.forEach(function (sheetName) {
+    const sheet = spreadsheet.getSheetByName(sheetName);
+    if (sheet && spreadsheet.getSheets().length > 1) {
+      spreadsheet.deleteSheet(sheet);
+    }
+  });
 }
 
 function createPlacementSheets() {

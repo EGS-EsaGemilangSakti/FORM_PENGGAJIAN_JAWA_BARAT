@@ -1,20 +1,16 @@
 export const PLACEMENTS = [
-  'DRIVER JNT TGR',
-  'DRIVER JNT PKU',
-  'DRIVER JNT BTN',
-  'DRIVER JNT JRT SUNTER',
-  'DRIVER CARGO SUKABUMI',
-  'DRIVER CARGO BANDUNG',
-  'DRIVER VIP',
-  'DRIVER FASTRANS',
-  'DRIVER CARGO CIANJUR',
-  'DRIVER APL JURUMUDI',
-  'DRIVER APL SEMARANG',
-  'DRIVER APL BANDUNG',
+  'SUKABUMI',
+  'SUBANG',
+  'BANDUNG 99A',
+  'BDO 3D',
+  'BDO 5J',
+  'MINISO',
+  'SOG 99',
+  'INDRAMAYU',
 ] as const;
 
 export const EMPLOYMENT_STATUSES = ['FREELANCE', 'REGULER'] as const;
-export const POSITIONS = ['DRIVER SIM B1/B2 UMUM'] as const;
+export const POSITIONS = ['ADMIN', 'KORDINATOR', 'SORTER', 'KURIR', 'DRIVER'] as const;
 export const OWNERSHIP_STATUSES = ['PRIBADI', 'ORANG LAIN'] as const;
 export const GENDERS = ['Laki-laki', 'Perempuan'] as const;
 export const MARITAL_STATUSES = ['Menikah', 'Belum Menikah', 'Cerai Hidup', 'Cerai Mati'] as const;

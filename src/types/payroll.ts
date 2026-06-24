@@ -1,5 +1,5 @@
 export type EmploymentStatus = 'FREELANCE' | 'REGULER';
-export type Position = 'DRIVER SIM B1/B2 UMUM';
+export type Position = 'ADMIN' | 'KORDINATOR' | 'SORTER' | 'KURIR' | 'DRIVER';
 export type OwnershipStatus = 'PRIBADI' | 'ORANG LAIN';
 export type AccountValidationStatus = 'UNVALIDATED' | 'VALID' | 'INVALID';
 export type Gender = 'Laki-laki' | 'Perempuan';

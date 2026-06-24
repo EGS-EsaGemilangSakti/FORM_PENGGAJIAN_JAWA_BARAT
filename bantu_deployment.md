@@ -1,25 +1,29 @@
-# link spreadsheet              : https://docs.google.com/spreadsheets/d/1RfCck0Y3abUbTUFmFzvmJgOB7hFxRmCn8bp5GfXgn5o/edit?gid=0#gid=0
-# link folder PAYROLL_UPLOADS   : https://drive.google.com/drive/folders/1J9zv9Aj-a2VQeafQlz-NGhSGBHa1mlnG?hl=ID
-## link folder KTP              : https://drive.google.com/drive/folders/1BJnMYEp9QnnMuyMQDaTA0BpzdQEt7Uex?hl=ID
-## link folder SURAT_KUASA      : https://drive.google.com/drive/folders/1nhAAkf0gUBxGag3McWxn91YG_e9ktAAC?hl=ID
-## link folder KARTU_KELUARGA   : https://drive.google.com/drive/folders/1KTRvR6vUvI6UNxl6xflWASHCnXs0P06q?hl=ID
+# link spreadsheet              : isi dengan link spreadsheet baru
+# link folder PAYROLL_UPLOADS   : https://drive.google.com/drive/folders/1ocazo3KkDpNmUNcgLh4KsW30uks0vW15
+## link folder KTP              : https://drive.google.com/drive/folders/1cauIAShMtk3smWrIDuFy0-017vWBoD0E
+## link folder SIM              : isi dengan link folder SIM baru
+## link folder SURAT_KUASA      : https://drive.google.com/drive/folders/1woFgIMcjsHE5-H3UH-GeMVk36LGrkW6S
+## link folder KARTU_KELUARGA   : https://drive.google.com/drive/folders/1Zn0osxg5zCKfY9dtk6vcVgmHl2h-eYc_
 
 # ID yang dipakai Apps Script
 
-SPREADSHEET_ID=1RfCck0Y3abUbTUFmFzvmJgOB7hFxRmCn8bp5GfXgn5o
-PAYROLL_UPLOADS_FOLDER_ID=1J9zv9Aj-a2VQeafQlz-NGhSGBHa1mlnG
-KTP_FOLDER_ID=1BJnMYEp9QnnMuyMQDaTA0BpzdQEt7Uex
-SURAT_KUASA_FOLDER_ID=1nhAAkf0gUBxGag3McWxn91YG_e9ktAAC
-KARTU_KELUARGA_FOLDER_ID=1KTRvR6vUvI6UNxl6xflWASHCnXs0P06q
+SPREADSHEET_ID=spreadsheet_id_baru
+ROOT_FOLDER_ID=1ocazo3KkDpNmUNcgLh4KsW30uks0vW15
+KTP_FOLDER_ID=1cauIAShMtk3smWrIDuFy0-017vWBoD0E
+SIM_FOLDER_ID=folder_id_sim_baru
+SURAT_KUASA_FOLDER_ID=1woFgIMcjsHE5-H3UH-GeMVk36LGrkW6S
+KARTU_KELUARGA_FOLDER_ID=1Zn0osxg5zCKfY9dtk6vcVgmHl2h-eYc_
 
 # Script Properties yang perlu diisi di Google Apps Script
 
 API_CO_ID_KEY=isi_api_key_api_co_id_di_sini
-SPREADSHEET_ID=1RfCck0Y3abUbTUFmFzvmJgOB7hFxRmCn8bp5GfXgn5o
-KTP_FOLDER_ID=1BJnMYEp9QnnMuyMQDaTA0BpzdQEt7Uex
-SURAT_KUASA_FOLDER_ID=1nhAAkf0gUBxGag3McWxn91YG_e9ktAAC
-KARTU_KELUARGA_FOLDER_ID=1KTRvR6vUvI6UNxl6xflWASHCnXs0P06q
-ALLOWED_ORIGINS=http://localhost:5173,https://egs-esagemilangsakti.github.io,https://form.ptesagemilangsakti.com
+SPREADSHEET_ID=spreadsheet_id_baru
+ROOT_FOLDER_ID=1ocazo3KkDpNmUNcgLh4KsW30uks0vW15
+KTP_FOLDER_ID=1cauIAShMtk3smWrIDuFy0-017vWBoD0E
+SIM_FOLDER_ID=folder_id_sim_baru
+SURAT_KUASA_FOLDER_ID=1woFgIMcjsHE5-H3UH-GeMVk36LGrkW6S
+KARTU_KELUARGA_FOLDER_ID=1Zn0osxg5zCKfY9dtk6vcVgmHl2h-eYc_
+ALLOWED_ORIGINS=http://localhost:5173,https://username.github.io
 
 # Tempat menaruh API key
 
@@ -40,11 +44,13 @@ API key dari API.CO.ID
 2. Aktifkan GitHub Pages dengan Source: GitHub Actions.
 3. Tunggu URL GitHub Pages aktif.
 4. Ambil origin URL GitHub Pages, contoh:
-   https://form.ptesagemilangsakti.com
+   https://username.github.io
 5. Isi Script Properties Apps Script:
    API_CO_ID_KEY
    SPREADSHEET_ID
+   ROOT_FOLDER_ID
    KTP_FOLDER_ID
+   SIM_FOLDER_ID
    SURAT_KUASA_FOLDER_ID
    KARTU_KELUARGA_FOLDER_ID
    ALLOWED_ORIGINS
