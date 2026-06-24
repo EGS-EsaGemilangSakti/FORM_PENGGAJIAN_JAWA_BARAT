@@ -37,7 +37,6 @@ import { PositionField } from '../fields/PositionField';
 import { PowerOfAttorneyUploadField } from '../fields/PowerOfAttorneyUploadField';
 import { PtkpField } from '../fields/PtkpField';
 import { ReligionField } from '../fields/ReligionField';
-import { SimUploadField } from '../fields/SimUploadField';
 
 const defaultValidation = {
   status: 'UNVALIDATED' as const,
@@ -88,10 +87,10 @@ const stepFields = {
     'ownershipStatus',
     'powerOfAttorneyFile',
   ],
-  3: ['ktpFile', 'simFile', 'familyCardFile', 'dataAgreement'],
+  3: ['ktpFile', 'familyCardFile', 'dataAgreement'],
 } as const;
 
-type PersistedPayrollValues = Partial<Omit<PayrollFormValues, 'ktpFile' | 'simFile' | 'familyCardFile' | 'powerOfAttorneyFile'>>;
+type PersistedPayrollValues = Partial<Omit<PayrollFormValues, 'ktpFile' | 'familyCardFile' | 'powerOfAttorneyFile'>>;
 
 interface PersistedDraft {
   currentStep?: 1 | 2 | 3;
@@ -118,7 +117,6 @@ function savePersistedDraft(currentStep: number, values: unknown) {
   if (typeof window === 'undefined') return;
   const persistableValues = { ...(values as Record<string, unknown>) };
   delete persistableValues.ktpFile;
-  delete persistableValues.simFile;
   delete persistableValues.familyCardFile;
   delete persistableValues.powerOfAttorneyFile;
   window.localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify({ currentStep, values: persistableValues }));
@@ -493,10 +491,9 @@ export function PayrollForm() {
     submitLock.current = true;
     try {
       const ktp = values.ktpFile.item(0);
-      const sim = values.simFile.item(0);
       const familyCard = values.familyCardFile.item(0);
       const powerOfAttorney = values.powerOfAttorneyFile?.item(0) ?? null;
-      if (!ktp || !sim || !familyCard || !selectedBank) throw new Error('Data belum lengkap');
+      if (!ktp || !familyCard || !selectedBank) throw new Error('Data belum lengkap');
       const payload = {
         origin: window.location.origin,
         submittedAt: nowIso(),
@@ -538,7 +535,6 @@ export function PayrollForm() {
         },
         files: {
           ktp: await fileToBase64Payload(ktp),
-          sim: await fileToBase64Payload(sim),
           familyCard: await fileToBase64Payload(familyCard),
           powerOfAttorney: powerOfAttorney ? await fileToBase64Payload(powerOfAttorney) : null,
         },
@@ -650,7 +646,6 @@ export function PayrollForm() {
         <div className="space-y-6">
           <StepCard title="Unggah Dokumen" icon={<CloudUpload className="h-5 w-5 text-[#f2ca50]" />}>
             <KtpUploadField register={register} watch={watch} error={errors.ktpFile?.message} />
-            <SimUploadField register={register} watch={watch} error={errors.simFile?.message} />
             <FamilyCardUploadField register={register} watch={watch} error={errors.familyCardFile?.message} />
           </StepCard>
 

@@ -62,7 +62,6 @@ export interface PayrollFormValues {
   accountValidation: AccountValidationResult;
   ownershipStatus: OwnershipStatus | '';
   ktpFile: FileList;
-  simFile: FileList;
   familyCardFile: FileList;
   powerOfAttorneyFile?: FileList;
   dataAgreement: boolean;
@@ -74,12 +73,11 @@ export interface PayrollSubmitPayload {
   origin: string;
   submittedAt: string;
   website: string;
-  data: Omit<PayrollFormValues, 'ktpFile' | 'simFile' | 'familyCardFile' | 'powerOfAttorneyFile' | 'dataAgreement' | 'bankCode' | 'bankName'> & {
+  data: Omit<PayrollFormValues, 'ktpFile' | 'familyCardFile' | 'powerOfAttorneyFile' | 'dataAgreement' | 'bankCode' | 'bankName'> & {
     bank: BankOption;
   };
   files: {
     ktp: UploadPayload;
-    sim: UploadPayload;
     familyCard: UploadPayload;
     powerOfAttorney: UploadPayload | null;
   };

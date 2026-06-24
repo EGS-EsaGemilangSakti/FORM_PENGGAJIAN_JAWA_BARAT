@@ -30,7 +30,6 @@ const HEADERS = [
   'Validation Timestamp',
   'Status Kepemilikan Rekening',
   'KTP URL',
-  'SIM URL',
   'Kartu Keluarga URL',
   'Surat Kuasa URL',
   'QR Payload',
@@ -170,7 +169,6 @@ function handleSubmitPayroll(payload) {
   }
   const qrCode = generateQrCode(submissionId);
   const ktpFile = uploadToDrive(payload.files && payload.files.ktp, 'ktp', submissionId);
-  const simFile = uploadToDrive(payload.files && payload.files.sim, 'sim', submissionId);
   const kartuKeluargaFile = uploadToDrive(payload.files && payload.files.familyCard, 'kartuKeluarga', submissionId);
   var suratKuasaFile = { url: '' };
 
@@ -178,7 +176,7 @@ function handleSubmitPayroll(payload) {
     suratKuasaFile = uploadToDrive(payload.files.powerOfAttorney, 'suratKuasa', submissionId);
   }
 
-  saveToSpreadsheet(submissionId, data, backendValidation, ktpFile.url, simFile.url, kartuKeluargaFile.url, suratKuasaFile.url, qrCode);
+  saveToSpreadsheet(submissionId, data, backendValidation, ktpFile.url, kartuKeluargaFile.url, suratKuasaFile.url, qrCode);
   logSubmission('SUCCESS', submissionId, 'Data berhasil disimpan');
 
   return {
@@ -432,11 +430,9 @@ function uploadToDrive(filePayload, type, submissionId) {
   const extension = getExtension(filePayload.mimeType);
   const folderId = type === 'ktp'
     ? KTP_FOLDER_ID
-    : type === 'sim'
-      ? SIM_FOLDER_ID
-      : type === 'kartuKeluarga'
-        ? KARTU_KELUARGA_FOLDER_ID
-        : SURAT_KUASA_FOLDER_ID;
+    : type === 'kartuKeluarga'
+      ? KARTU_KELUARGA_FOLDER_ID
+      : SURAT_KUASA_FOLDER_ID;
   const fileName = submissionId + '-' + type + extension;
   const blob = Utilities.newBlob(bytes, filePayload.mimeType, fileName);
   const createdFile = DriveApp.getFolderById(folderId).createFile(blob);
@@ -447,8 +443,8 @@ function uploadToDrive(filePayload, type, submissionId) {
   };
 }
 
-function saveToSpreadsheet(submissionId, data, validation, ktpUrl, simUrl, kartuKeluargaUrl, suratKuasaUrl, qrCode) {
-  const row = buildSubmissionRow(submissionId, data, validation, ktpUrl, simUrl, kartuKeluargaUrl, suratKuasaUrl, qrCode);
+function saveToSpreadsheet(submissionId, data, validation, ktpUrl, kartuKeluargaUrl, suratKuasaUrl, qrCode) {
+  const row = buildSubmissionRow(submissionId, data, validation, ktpUrl, kartuKeluargaUrl, suratKuasaUrl, qrCode);
   const mainSheet = getSheet(SHEET_NAME);
   createSpreadsheetHeaders();
   mainSheet.appendRow(row);
@@ -465,7 +461,7 @@ function saveToSpreadsheet(submissionId, data, validation, ktpUrl, simUrl, kartu
   applyDuplicateNikFormattingToSheet(positionPlacementSheet);
 }
 
-function buildSubmissionRow(submissionId, data, validation, ktpUrl, simUrl, kartuKeluargaUrl, suratKuasaUrl, qrCode) {
+function buildSubmissionRow(submissionId, data, validation, ktpUrl, kartuKeluargaUrl, suratKuasaUrl, qrCode) {
   return [
     submissionId,
     new Date(),
@@ -494,7 +490,6 @@ function buildSubmissionRow(submissionId, data, validation, ktpUrl, simUrl, kart
     validation.validationTimestamp,
     data.ownershipStatus,
     ktpUrl,
-    simUrl,
     kartuKeluargaUrl,
     suratKuasaUrl,
     qrCode.payload,
