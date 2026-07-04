@@ -194,7 +194,7 @@ function handleSubmitPayroll(payload) {
 function validatePayload(data) {
   rejectUnknownFields(data, ALLOWED_FIELDS);
   if (!validateEmail(data.email)) throw new Error('Email tidak valid');
-  if (!/^[A-Z ]+$/.test(data.fullName || '')) throw new Error('Nama lengkap tidak valid');
+  if (!/^[A-Z .]+$/.test(data.fullName || '')) throw new Error('Nama lengkap tidak valid');
   if (!data.address || data.address.length < 10 || data.address.length > 500) throw new Error('Alamat tidak valid');
   if (!data.addressDetail || data.addressDetail.length < 5 || data.addressDetail.length > 200) throw new Error('Detail alamat tidak valid');
   if (!/^\d{2}$/.test(data.provinceCode || '') || !data.provinceName) throw new Error('Provinsi tidak valid');
