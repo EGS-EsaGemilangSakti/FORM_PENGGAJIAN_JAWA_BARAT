@@ -44,7 +44,7 @@ export const payrollSchema = z
     bankCode: z.string().refine((code) => BANKS.some((bank) => bank.bank_code === code), 'Bank wajib dipilih'),
     bankName: z.string().min(1, 'Bank wajib dipilih'),
     accountNumber: z.string().regex(/^\d{5,30}$/, 'Nomor rekening wajib 5-30 digit angka'),
-    accountOwner: z.string().trim().min(1, 'Nama pemilik rekening wajib diisi').regex(/^[A-Z ]+$/, 'Nama pemilik rekening hanya boleh huruf kapital dan spasi'),
+    accountOwner: z.string().trim().min(1, 'Nama pemilik rekening wajib diisi').regex(/^[A-Z .]+$/, 'Nama pemilik rekening hanya boleh huruf kapital, spasi, dan titik'),
     accountValidation: z.object({
       status: z.enum(['UNVALIDATED', 'VALID', 'INVALID']),
       score: z.number().nullable(),

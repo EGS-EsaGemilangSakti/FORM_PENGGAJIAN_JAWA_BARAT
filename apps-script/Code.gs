@@ -219,7 +219,7 @@ function validatePayload(data) {
   if (!/^\d{2}-\d{2}-\d{4}$/.test(data.firstWorkDate || '')) throw new Error('Tanggal kerja pertama tidak valid');
   if (!validateBank(data.bank)) throw new Error('Bank tidak valid');
   if (!/^\d{5,30}$/.test(data.accountNumber || '')) throw new Error('Nomor rekening tidak valid');
-  if (!/^[A-Z ]+$/.test(data.accountOwner || '')) throw new Error('Nama pemilik rekening tidak valid');
+  if (!/^[A-Z .]+$/.test(data.accountOwner || '')) throw new Error('Nama pemilik rekening tidak valid');
   if (OWNERSHIP_STATUSES.indexOf(data.ownershipStatus) === -1) throw new Error('Status kepemilikan rekening tidak valid');
 
   return {
@@ -279,7 +279,7 @@ function validateBank(bank) {
 function validateBankAccount(payload) {
   if (!validateBank({ bank_code: payload.bank_code, bank_name: payload.bank_name })) throw new Error('Bank tidak valid');
   if (!/^\d{5,30}$/.test(payload.account_number || '')) throw new Error('Nomor rekening tidak valid');
-  if (!/^[A-Z ]+$/.test(payload.account_owner || '')) throw new Error('Nama pemilik rekening tidak valid');
+  if (!/^[A-Z .]+$/.test(payload.account_owner || '')) throw new Error('Nama pemilik rekening tidak valid');
 
   const apiKey = SCRIPT_PROPERTIES.getProperty('API_CO_ID_KEY');
   if (!apiKey) throw new Error('API_CO_ID_KEY belum diatur');
@@ -302,7 +302,7 @@ function validateBankAccount(payload) {
 
   const rawData = parsed.data || parsed;
   const score = Number(rawData.score || 0);
-  const isValid = rawData.is_valid === true && score >= 7;
+  const isValid = rawData.is_valid === true && score >= 9;
   const validationTimestamp = new Date().toISOString();
 
   return {
