@@ -494,6 +494,13 @@ export function PayrollForm() {
       const familyCard = values.familyCardFile.item(0);
       const powerOfAttorney = values.powerOfAttorneyFile?.item(0) ?? null;
       if (!ktp || !familyCard || !selectedBank) throw new Error('Data belum lengkap');
+      const prepareDocument = async (file: File, label: string) => {
+        try {
+          return await fileToBase64Payload(file);
+        } catch (error) {
+          throw new Error(`${label}: ${error instanceof Error ? error.message : 'File tidak dapat dibaca. Pilih ulang file.'}`);
+        }
+      };
       const payload = {
         origin: window.location.origin,
         submittedAt: nowIso(),
@@ -534,9 +541,9 @@ export function PayrollForm() {
           bank: selectedBank,
         },
         files: {
-          ktp: await fileToBase64Payload(ktp),
-          familyCard: await fileToBase64Payload(familyCard),
-          powerOfAttorney: powerOfAttorney ? await fileToBase64Payload(powerOfAttorney) : null,
+          ktp: await prepareDocument(ktp, 'KTP'),
+          familyCard: await prepareDocument(familyCard, 'Kartu Keluarga'),
+          powerOfAttorney: powerOfAttorney ? await prepareDocument(powerOfAttorney, 'Surat Kuasa') : null,
         },
       };
       const response = await submitMutation.mutateAsync(payload);

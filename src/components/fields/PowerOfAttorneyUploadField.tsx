@@ -1,5 +1,6 @@
 import { FileText } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { usePreparedUpload } from '../../hooks/usePreparedUpload';
 import type { UseFormRegister, UseFormWatch } from 'react-hook-form';
 import type { PayrollFormValues } from '../../types/payroll';
 
@@ -17,6 +18,7 @@ export function PowerOfAttorneyUploadField({
   const [preview, setPreview] = useState('');
   const fileList = watch('powerOfAttorneyFile');
   const file = fileList?.item(0);
+  const preparation = usePreparedUpload(file);
 
   useEffect(() => {
     if (!file || !file.type.startsWith('image/')) {
@@ -45,6 +47,7 @@ export function PowerOfAttorneyUploadField({
         <p className="mt-1 max-w-52 text-xs font-medium leading-4 text-[#d0c5af]">Format PDF, JPG, JPEG, atau PNG. Wajib jika rekening milik orang lain.</p>
         <input className="absolute inset-0 cursor-pointer opacity-0" type="file" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" {...register('powerOfAttorneyFile')} />
       </div>
+      {preparation ? <span role={preparation.failed ? 'alert' : 'status'} className={`mt-2 block text-sm ${preparation.failed ? 'text-accent' : 'text-[#d0c5af]'}`}>{preparation.message}</span> : null}
       {error ? <span className="mt-2 block text-sm text-accent">{error}</span> : null}
     </label>
   );

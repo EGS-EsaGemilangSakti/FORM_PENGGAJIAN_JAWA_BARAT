@@ -73,14 +73,38 @@ async function compressImageFile(file: File): Promise<File> {
   }
 }
 
-export async function fileToBase64Payload(file: File): Promise<UploadPayload> {
+const preparedUploads = new WeakMap<File, Promise<UploadPayload>>();
+
+// Keep the bytes in memory after selection: the original device/cloud file may
+// no longer be readable when the user reaches the final submit step.
+export function fileToBase64Payload(file: File): Promise<UploadPayload> {
+  const cached = preparedUploads.get(file);
+  if (cached) return cached;
+  const pending = readUploadPayload(file).catch((error: unknown) => {
+    preparedUploads.delete(file);
+    throw error;
+  });
+  preparedUploads.set(file, pending);
+  return pending;
+}
+
+async function readUploadPayload(file: File): Promise<UploadPayload> {
+  if (!isAllowedFile(file, KTP_MIME_TYPES) || file.size === 0) {
+    throw new Error('Pilih file PDF, JPG, atau PNG yang tidak kosong, maksimal 5MB.');
+  }
   const processedFile = await compressImageFile(file);
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onerror = () => reject(new Error('Gagal membaca file'));
+    const fail = () => reject(new Error('File tidak dapat dibaca. Unduh atau simpan file ke perangkat, lalu pilih ulang.'));
+    reader.onerror = fail;
+    reader.onabort = fail;
     reader.onload = () => {
-      const result = String(reader.result || '');
-      const base64 = result.includes(',') ? result.split(',')[1] : result;
+      const result = typeof reader.result === 'string' ? reader.result : '';
+      const base64 = result.split(',')[1];
+      if (!result.startsWith('data:') || !base64) {
+        fail();
+        return;
+      }
       resolve({
         fileName: processedFile.name,
         mimeType: processedFile.type,
